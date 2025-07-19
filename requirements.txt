@@ -1,0 +1,14 @@
+# Core framework
+Django==5.2.4
+
+# Asynchronous communication and WebSocket handling
+channels==4.1.0
+daphne==4.1.2
+asgiref==3.8.1
+
+# Redis client for Channels backend
+redis==5.0.1
+
+# Optional utilities
+python-decouple==3.8
+Pillow==10.2.0
