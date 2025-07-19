@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room - {{ room_name }}</title>
+</head>
+<body>
+<h2>Room: {{ room_name }}</h2>
+<div id="chat-log" style="height: 200px; border: 1px solid black; overflow-y: scroll;"></div>
+
+<input id="chat-message-input" type="text" placeholder="Type your message...">
+<button id="chat-message-submit">Send</button>
+<br><br>
+
+<input type="file" id="file-input">
+<button id="file-send">Send File</button>
+
+<script>
+    const roomName = "{{ room_name }}";
+    const username = "{{ request.user.username }}";
+
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const message = data.message;
+        const sender = data.username;
+
+        let displayMessage;
+        if (message.startsWith("File received: ")) {
+            const fileUrl = message.replace("File received: ", "");
+            const fileName = fileUrl.split('/').pop();
+            displayMessage = `<b>${sender}</b>: <a href="${fileUrl}" download="${fileName}">${fileName}</a>`;
+        } else {
+            displayMessage = `<b>${sender}</b>: ${message}`;
+        }
+
+        document.querySelector('#chat-log').innerHTML += displayMessage + '<br>';
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        if (message.trim() === "") return;
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': username
+        }));
+        messageInputDom.value = '';
+    };
+
+    document.querySelector('#file-send').onclick = function() {
+        const fileInput = document.querySelector('#file-input');
+        const file = fileInput.files[0];
+        if (!file) return alert("Please choose a file!");
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Data = e.target.result.split(",")[1];
+            chatSocket.send(JSON.stringify({
+                'file_name': file.name,
+                'file_data': base64Data,
+                'username': username
+            }));
+        };
+        reader.readAsDataURL(file);
+    };
+</script>
+</body>
+</html>

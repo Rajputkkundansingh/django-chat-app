@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>Home</title></head>
+<body>
+<h2>Welcome, {{ request.user.username }}</h2>
+<form method="get">
+    <input type="text" name="room_name" placeholder="Enter room name" required>
+    <button type="submit">Join Chat Room</button>
+</form>
+
+{% if request.GET.room_name %}
+    <script>
+        window.location.href = "/chat/{{ request.GET.room_name }}/";
+    </script>
+{% endif %}
+
+<p><a href="{% url 'logout' %}">Logout</a></p>
+</body>
+</html>
