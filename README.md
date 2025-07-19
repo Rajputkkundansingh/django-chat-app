@@ -1,4 +1,4 @@
-#Django Real-Time Chat Application
+# Django Real-Time Chat Application
 A real-time chat application built using Django, Django Channels, and WebSockets, featuring user authentication, room-based messaging, and file sharing. Messages appear instantly without page reloads, and files can be uploaded and shared seamlessly between users.
 
 Features
