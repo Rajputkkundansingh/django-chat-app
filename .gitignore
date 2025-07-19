@@ -1,0 +1,38 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.env/
+venv/
+ENV/
+env.bak/
+env/
+
+# SQLite database
+db.sqlite3
+
+# Media files (user uploads)
+media/
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Compiled translation files
+*.mo
+*.pot
+
+# Collected static files
+staticfiles/
+
+# Backup files
+*.bak
